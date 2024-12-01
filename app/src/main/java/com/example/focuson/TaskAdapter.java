@@ -1,6 +1,7 @@
 package com.example.focuson;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -54,7 +55,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         holder.taskPriorityTextView.setText("Priority: " + task.getPriority()); // 우선순위  설정
         holder.taskCheckBox.setChecked(task.isChecked());
         // checked라면 취소선을 긋고 흐릿하게 만든다.
-//        Log.d("ischekd", "onBindViewHolder() returned: " + taskList.get(position).isChecked());
         if(taskList.get(position).isChecked()){
             // 완료시 흐릿하게 만듦.
             holder.itemView.setAlpha(0.5f);
@@ -90,8 +90,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == R.id.edit_task) {
-                    // 수정 로직 개발 필요.
-                    Toast.makeText(context, "할 일 수정: " + task.getTitle(), Toast.LENGTH_SHORT).show();
+                    // EditTaskActivity로 이동
+                    Intent editIntent = new Intent(context, EditTaskActivity.class);
+                    editIntent.putExtra("taskId", task.getId());
+                    editIntent.putExtra("taskTitle", task.getTitle());
+                    editIntent.putExtra("importanceValue", task.getImportance());
+                    editIntent.putExtra("desireValue", task.getDesire());
+                    editIntent.putExtra("obligationValue", task.getObligation());
+                    editIntent.putExtra("deadline", task.getDeadline());
+
+                    // startActivityForResult 대신 editTaskLauncher 사용
+                    ((MainActivity) context).editTaskLauncher.launch(editIntent);
                     return true;
                 } else if (item.getItemId() == R.id.delete_task) {
                     dbHelper.deleteTask(task.getId()); // DB에서 삭제
@@ -164,5 +173,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         public int getOpacity() {
             return PixelFormat.TRANSPARENT;
         }
+
     }
 }
