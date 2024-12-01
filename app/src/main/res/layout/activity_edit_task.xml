@@ -1,10 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditTaskActivity">
+    android:padding="16dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Task Title -->
+        <EditText
+            android:id="@+id/editTextTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Task Title"
+            android:inputType="text"
+            android:padding="8dp" />
+
+        <!-- Importance -->
+        <TextView
+            android:id="@+id/textViewImportance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Importance: 1"
+            android:paddingTop="16dp" />
+
+        <SeekBar
+            android:id="@+id/seekBarImportance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="9" />
+
+        <!-- Desire -->
+        <TextView
+            android:id="@+id/textViewDesire"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Desire: 1"
+            android:paddingTop="16dp" />
+
+        <SeekBar
+            android:id="@+id/seekBarDesire"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="9" />
+
+        <!-- Obligation -->
+        <TextView
+            android:id="@+id/textViewObligation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Obligation: 1"
+            android:paddingTop="16dp" />
+
+        <SeekBar
+            android:id="@+id/seekBarObligation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="9" />
+
+        <!-- Deadline -->
+        <TextView
+            android:id="@+id/textViewDeadline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Deadline: "
+            android:paddingTop="16dp" />
+
+        <Button
+            android:id="@+id/buttonSelectDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Deadline" />
+
+        <!-- Save Button -->
+        <Button
+            android:id="@+id/buttonSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Task"
+            android:layout_marginTop="24dp" />
+    </LinearLayout>
+</ScrollView>
