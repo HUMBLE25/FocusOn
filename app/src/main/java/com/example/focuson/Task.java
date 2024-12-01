@@ -10,8 +10,9 @@ public class Task {
     private int desire;
     private boolean isChecked;
     private String whenChecked;
+    private int priority; // 우선순위를 나타내는 정수값
 
-    public Task(int id, String title, int importance, int obligation, String deadline, int desire, boolean isChecked, String whenChecked) {
+    public Task(int id, String title, int importance, int obligation, String deadline, int desire, boolean isChecked, String whenChecked, int priority) {
         this.id = id;
         this.title = title;
         this.importance = importance;
@@ -20,6 +21,7 @@ public class Task {
         this.desire = desire;
         this.isChecked = isChecked;
         this.whenChecked = whenChecked;
+        this.priority = priority;
     }
 
     // Getters and setters for each field
@@ -54,6 +56,9 @@ public class Task {
     public String getWhenChecked() {
         return whenChecked;
     }
+    public int getPriority() {
+        return priority;
+    }
 
     public void setChecked(boolean checked) {
         isChecked = checked;
@@ -62,4 +67,5 @@ public class Task {
     public void setWhenChecked(String whenChecked) {
         this.whenChecked = whenChecked;
     }
+    public void setPriority(int priority){ this.priority = priority;}
 }

@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         // DB에서 할 일 목록 불러오기
         loadTasksFromDB();
+
         // TaskAdapter 설정, 할일 목록 출력.
         setTaskAdapter();
 
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 deadline = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(deadlineDate);
             }
 
-            Task newTask = new Task(0, taskTitle, importance, obligation, deadline, desire, false, null);
+            Task newTask = new Task(0, taskTitle, importance, obligation, deadline, desire, false, null,0);
             dbHelper.insertTask(newTask); // DB에 새로운 Task 저장
 
             loadTasksFromDB(); // DB에서 다시 할 일 목록 불러오기

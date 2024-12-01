@@ -112,9 +112,18 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Task> taskList = new ArrayList<>();
 
-        String query = "SELECT id, title, deadline, is_today, weighted_priority FROM " + VIEW_TASK_PRIORITY;
+        String query = "SELECT id, title, deadline, ischecked, whenchecked, " +
+                "(importance * 0.8 + desire * 0.5 + obligation * 0.9) AS weighted_priority " +
+                "FROM " + TABLE_TASK + " " +
+                "WHERE deadline BETWEEN date('now') AND date('now', '+1 day') " +
+                "ORDER BY " +
+                "CASE WHEN deadline = date('now') THEN 1 ELSE 0 END DESC, " +
+                "weighted_priority DESC, " +
+                "ischecked ASC, whenchecked ASC;";
+
         Cursor cursor = db.rawQuery(query, null);
 
+        int priority = 1; // 순서를 매길 초기값
         if (cursor.moveToFirst()) {
             do {
                 Task task = new Task(
@@ -124,14 +133,18 @@ public class DBHelper extends SQLiteOpenHelper {
                         0,  // obligation (생략)
                         cursor.getString(2),  // deadline
                         0,  // desire (생략)
-                        false,  // ischecked (생략)
-                        null  // whenchecked (생략)
+                        cursor.getInt(3) == 1,  // isChecked
+                        cursor.getString(4),  // whenChecked
+                        priority // 동적으로 계산한 priority
+
                 );
                 taskList.add(task);
+                priority++; // 다음 순서 증가
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
         return taskList;
     }
+
 }

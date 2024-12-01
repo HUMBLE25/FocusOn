@@ -50,9 +50,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         Task task = taskList.get(position);
 
         holder.taskTitleTextView.setText(task.getTitle());
-        // 왜 모두 1로 출력 되는 거지?
-        Log.d("task.getImportance()", "task.getImportance() returned: " + task.getImportance());
-        holder.taskPriorityTextView.setText("Priority: " + task.getImportance());
+        Log.d("task.getPriority()", "task.getPriority() returned: " + task.getPriority());
+        holder.taskPriorityTextView.setText("Priority: " + task.getPriority()); // 우선순위  설정
         holder.taskCheckBox.setChecked(task.isChecked());
         // checked라면 취소선을 긋고 흐릿하게 만든다.
 //        Log.d("ischekd", "onBindViewHolder() returned: " + taskList.get(position).isChecked());
