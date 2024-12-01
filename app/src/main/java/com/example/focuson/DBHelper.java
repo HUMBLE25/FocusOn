@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "mytodolist.db";
+    private static final String DATABASE_NAME = "focuson.db";
     private static final int DATABASE_VERSION = 3; // VIEW 추가로 버전 증가
     private static final String TABLE_TASK = "Task";
     private static final String VIEW_TASK_PRIORITY = "TaskPriorityView";
