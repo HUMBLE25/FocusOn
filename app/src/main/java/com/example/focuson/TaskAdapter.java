@@ -51,36 +51,39 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         Task task = taskList.get(position);
 
         holder.taskTitleTextView.setText(task.getTitle());
-        Log.d("task.getPriority()", "task.getPriority() returned: " + task.getPriority());
+//        Log.d("task.getPriority()", "task.getPriority() returned: " + task.getPriority());
         holder.taskPriorityTextView.setText("Priority: " + task.getPriority()); // 우선순위  설정
         holder.taskCheckBox.setChecked(task.isChecked());
-        // checked라면 취소선을 긋고 흐릿하게 만든다.
+//         checked라면 취소선을 긋고 흐릿하게 만든다.
         if(taskList.get(position).isChecked()){
-            // 완료시 흐릿하게 만듦.
-            holder.itemView.setAlpha(0.5f);
-            // 전체 itemView에 취소선을 긋는다.
-            holder.itemView.setBackground(new StrikethroughDrawable());
+            holder.itemView.setAlpha(0.5f); // 완료시 흐릿하게 만듦.
+            holder.itemView.setBackground(new StrikethroughDrawable()); // 전체 itemView에 취소선을 긋는다.
         }
+//        if (task.isChecked()){
+//            holder.itemView.setAlpha(0.5f);  // 완료시 흐릿하게 만듦.
+//            holder.itemView.setBackground(new StrikethroughDrawable()); // 전체 itemView에 취소선을 긋는다.
+//        }else{
+//            holder.itemView.setAlpha(1f); // 미완료 상태
+//            holder.itemView.setBackground(null);
+//        }
         // 체크박스 리스너
         holder.taskCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             task.setChecked(isChecked);
+            // UI 및 DB 갱신
             if (isChecked) {
-                // 완료 시간 설정
-                // 완료시 흐릿하게 만듦.
-                holder.itemView.setAlpha(0.5f);
-                // 전체 itemView에 취소선을 긋는다.
-                holder.itemView.setBackground(new StrikethroughDrawable());
+                holder.itemView.setAlpha(0.5f);  // 완료시 흐릿하게 만듦.
+                holder.itemView.setBackground(new StrikethroughDrawable()); // 전체 itemView에 취소선을 긋는다.
                 String formattedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new java.util.Date());
-
                 task.setWhenChecked(formattedDate);
             } else {
-                // 미완료 상태
-                holder.itemView.setAlpha(1f);
+                holder.itemView.setAlpha(1f); // 미완료 상태
                 holder.itemView.setBackground(null);
                 task.setWhenChecked(null);
             }
-            // DB 업데이트
-            dbHelper.updateTask(task);
+            dbHelper.updateTask(task); // DB 업데이트
+//            ((MainActivity) context).loadTasksFromDB(); // 데이터 불러오기
+//            ((MainActivity) context).setTaskAdapter(); // 목록 재정렬, RecyclerView 갱신
+
         });
 
         // 옵션 버튼
@@ -106,6 +109,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     dbHelper.deleteTask(task.getId()); // DB에서 삭제
                     taskList.remove(position); // 로컬 리스트에서 삭제
                     Toast.makeText(context, "할 일 삭제됨", Toast.LENGTH_SHORT).show();
+                    ((MainActivity) context).loadTasksFromDB(); // 데이터 불러오기
+                    ((MainActivity) context).setTaskAdapter(); // 목록 재정렬, RecyclerView 갱신
                     return true;
                 }
                 return false;
@@ -157,7 +162,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
             canvas.drawLine(left, centerY, right, centerY, paint); // 취소선 그리기
         }
-
 
         @Override
         public void setAlpha(int alpha) {

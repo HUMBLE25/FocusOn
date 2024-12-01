@@ -111,15 +111,21 @@ public class DBHelper extends SQLiteOpenHelper {
     public ArrayList<Task> getTasksWithPriority() {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Task> taskList = new ArrayList<>();
-
-        String query = "SELECT id, title, deadline, ischecked, whenchecked, " +
+        String query = "SELECT id, title, importance, obligation, deadline, desire, ischecked, whenchecked, " +
                 "(importance * 0.8 + desire * 0.5 + obligation * 0.9) AS weighted_priority " +
-                "FROM " + TABLE_TASK + " " +
-                "WHERE deadline BETWEEN date('now') AND date('now', '+1 day') " +
-                "ORDER BY " +
+                "FROM Task " +
+                "ORDER BY ischecked ASC, " + // 완료된 할 일은 마지막으로 정렬
                 "CASE WHEN deadline = date('now') THEN 1 ELSE 0 END DESC, " +
                 "weighted_priority DESC, " +
-                "ischecked ASC, whenchecked ASC;";
+                "whenchecked ASC;";
+//        String query = "SELECT id, title, deadline, ischecked, whenchecked, " +
+//                "(importance * 0.8 + desire * 0.5 + obligation * 0.9) AS weighted_priority " +
+//                "FROM " + TABLE_TASK + " " +
+//                "WHERE deadline BETWEEN date('now') AND date('now', '+1 day') " +
+//                "ORDER BY " +
+//                "CASE WHEN deadline = date('now') THEN 1 ELSE 0 END DESC, " +
+//                "weighted_priority DESC, " +
+//                "ischecked ASC, whenchecked ASC;";
 
         Cursor cursor = db.rawQuery(query, null);
 

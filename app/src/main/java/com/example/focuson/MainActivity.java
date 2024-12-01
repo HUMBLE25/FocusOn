@@ -98,24 +98,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // 수정 결과를 받아 처리
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        // null이 나오고 있다. intent를 받아오지 못한다.
-//        Log.i("isgetIntent", "onActivityResult: " +data );
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == REQUEST_CODE_EDIT && resultCode == RESULT_OK) {
-//            boolean isUpdated = data.getBooleanExtra("isUpdated", false);
-//            if (isUpdated) {
-//                // 데이터를 다시 불러오고 RecyclerView를 갱신
-//                loadTasksFromDB();
-//                setTaskAdapter();
-//            }
-//        }
-//    }
-    // ActivityResultLauncher 초기화
-
-    private void loadTasksFromDB() {
+    public void loadTasksFromDB() {
         // DB에서 모든 할 일 불러오기
         taskList = dbHelper.getTasksWithPriority();
         if (taskList == null) {
@@ -123,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setTaskAdapter (){
+    public void setTaskAdapter (){
         taskAdapter = new TaskAdapter(this, taskList);
         taskRecyclerView.setAdapter(taskAdapter);
     }
