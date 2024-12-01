@@ -1,0 +1,40 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddTaskDesireActivity">
+
+    <!-- 바람 설정 텍스트 -->
+    <TextView
+        android:id="@+id/textViewDesire"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Desire: 1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="16dp"/>
+
+    <!-- 바람 설정을 위한 SeekBar -->
+    <SeekBar
+        android:id="@+id/seekBarDesire"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:max="9"
+        app:layout_constraintTop_toBottomOf="@id/textViewDesire"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp"/>
+
+    <!-- 다음 화면으로 이동하는 버튼 -->
+    <Button
+        android:id="@+id/buttonNextToObligation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        app:layout_constraintTop_toBottomOf="@id/seekBarDesire"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
