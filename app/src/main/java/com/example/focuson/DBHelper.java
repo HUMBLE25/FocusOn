@@ -113,19 +113,11 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<Task> taskList = new ArrayList<>();
         String query = "SELECT id, title, importance, obligation, deadline, desire, ischecked, whenchecked, " +
                 "(importance * 0.8 + desire * 0.5 + obligation * 0.9) AS weighted_priority " +
-                "FROM Task " +
+                "FROM " + TABLE_TASK + " " +
                 "ORDER BY ischecked ASC, " + // 완료된 할 일은 마지막으로 정렬
                 "CASE WHEN deadline = date('now') THEN 1 ELSE 0 END DESC, " +
                 "weighted_priority DESC, " +
-                "whenchecked ASC;";
-//        String query = "SELECT id, title, deadline, ischecked, whenchecked, " +
-//                "(importance * 0.8 + desire * 0.5 + obligation * 0.9) AS weighted_priority " +
-//                "FROM " + TABLE_TASK + " " +
-//                "WHERE deadline BETWEEN date('now') AND date('now', '+1 day') " +
-//                "ORDER BY " +
-//                "CASE WHEN deadline = date('now') THEN 1 ELSE 0 END DESC, " +
-//                "weighted_priority DESC, " +
-//                "ischecked ASC, whenchecked ASC;";
+                "whenchecked ASC";
 
         Cursor cursor = db.rawQuery(query, null);
 
@@ -135,14 +127,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 Task task = new Task(
                         cursor.getInt(0),  // id
                         cursor.getString(1),  // title
-                        0,  // importance (생략)
-                        0,  // obligation (생략)
-                        cursor.getString(2),  // deadline
-                        0,  // desire (생략)
-                        cursor.getInt(3) == 1,  // isChecked
-                        cursor.getString(4),  // whenChecked
+                        cursor.getInt(2),  // importance
+                        cursor.getInt(3),  // obligation
+                        cursor.getString(4),  // deadline
+                        cursor.getInt(5),  // desire
+                        cursor.getInt(6) == 1,  // isChecked
+                        cursor.getString(7),  // whenChecked
                         priority // 동적으로 계산한 priority
-
                 );
                 taskList.add(task);
                 priority++; // 다음 순서 증가
