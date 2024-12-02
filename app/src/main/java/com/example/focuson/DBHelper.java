@@ -144,4 +144,41 @@ public class DBHelper extends SQLiteOpenHelper {
         return taskList;
     }
 
+    public ArrayList<Task> getTasksByDate(String date) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Task> taskList = new ArrayList<>();
+        String query = "SELECT id, title, importance, obligation, deadline, desire, ischecked, whenchecked, " +
+                "(importance * 0.8 + desire * 0.5 + obligation * 0.9) AS weighted_priority " +
+                "FROM " + TABLE_TASK + " " +
+//                "WHERE deadline = ? " + // 특정 날짜의 할 일을 조회
+                "WHERE deadline BETWEEN date(?) AND date(?, '+1 day') " + // 선택된 날짜와 +1일까지 조회
+                "ORDER BY ischecked ASC, " + // 완료된 항목을 뒤로
+                "weighted_priority DESC, " +
+                "whenchecked ASC;";
+        Cursor cursor = db.rawQuery(query, new String[]{date});
+
+        int priority = 1;
+        if (cursor.moveToFirst()) {
+            do {
+                Task task = new Task(
+                        cursor.getInt(0),  // id
+                        cursor.getString(1),  // title
+                        cursor.getInt(2),  // importance
+                        cursor.getInt(3),  // obligation
+                        cursor.getString(4),  // deadline
+                        cursor.getInt(5),  // desire
+                        cursor.getInt(6) == 1,  // isChecked
+                        cursor.getString(7),  // whenChecked
+                        priority // 동적으로 계산된 우선순위
+                );
+                taskList.add(task);
+                priority++;
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return taskList;
+    }
+
+
 }
