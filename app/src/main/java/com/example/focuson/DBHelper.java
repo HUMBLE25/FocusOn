@@ -150,12 +150,11 @@ public class DBHelper extends SQLiteOpenHelper {
         String query = "SELECT id, title, importance, obligation, deadline, desire, ischecked, whenchecked, " +
                 "(importance * 0.8 + desire * 0.5 + obligation * 0.9) AS weighted_priority " +
                 "FROM " + TABLE_TASK + " " +
-//                "WHERE deadline = ? " + // 특정 날짜의 할 일을 조회
-                "WHERE deadline BETWEEN date(?) AND date(?, '+1 day') " + // 선택된 날짜와 +1일까지 조회
+                "WHERE date(deadline) BETWEEN date(?) AND date(?, '+1 day') " + // 날짜만 비교하도록 수정
                 "ORDER BY ischecked ASC, " + // 완료된 항목을 뒤로
                 "weighted_priority DESC, " +
                 "whenchecked ASC;";
-        Cursor cursor = db.rawQuery(query, new String[]{date});
+        Cursor cursor = db.rawQuery(query, new String[]{date,date}); // 두 날짜를 동일하게 전달
 
         int priority = 1;
         if (cursor.moveToFirst()) {

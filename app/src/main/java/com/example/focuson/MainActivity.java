@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -59,17 +60,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         loadTasksByDate(getFormattedDate(selectedDate)); // 오늘 날짜의 할 일 불러오기
-//        loadTasksFromDB(); // DB에서 할 일 목록 불러오기
-//        setTaskAdapter(); // TaskAdapter 설정, 할일 목록 출력.
 
         // 'Add Task' 버튼 클릭 시 AddTaskTitleActivity로 이동
-        addTaskButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AddTaskTitleActivity.class);
-                startActivity(intent);
-            }
-        });
+        addTaskButton.setOnClickListener(new AddTaskClickListener());
 
         // "수정" 후 결과 처리
         editTaskLauncher = registerForActivityResult(
@@ -104,8 +97,7 @@ public class MainActivity extends AppCompatActivity {
             Task newTask = new Task(0, taskTitle, importance, obligation, deadline, desire, false, null,0);
             dbHelper.insertTask(newTask); // DB에 새로운 Task 저장
 
-            loadTasksFromDB(); // DB에서 다시 할 일 목록 불러오기
-            setTaskAdapter(); // UI 업데이트
+            loadTasksByDate(getFormattedDate(selectedDate));
             Toast.makeText(this, "할 일이 추가되었습니다.", Toast.LENGTH_SHORT).show();
         }
     }
@@ -114,11 +106,16 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
-        // 오늘 날짜 표시
-        MenuItem todayDateItem = menu.findItem(R.id.menu_today_date);
-        String todayDate = new SimpleDateFormat("yyyy-MM-dd (EEE)", Locale.getDefault())
-                .format(selectedDate.getTime());
-        todayDateItem.setTitle(todayDate);
+        MenuItem todayDateItem = menu.findItem(R.id.menu_today_date); // 오늘 날짜 표기
+        View actionView = todayDateItem.getActionView(); // 커스텀 메뉴 항목을 가져오기
+        if (actionView != null) {
+            TextView todayDateText = actionView.findViewById(R.id.custom_today_date);
+            String todayDate = new SimpleDateFormat("yyyy-MM-dd (EEE)", Locale.getDefault())
+                    .format(selectedDate.getTime());
+            todayDateText.setText(todayDate); // 날짜 설정
+        }else {
+            Log.e("MenuItem", "Action view is null for menu_today_date");
+        }
 
         return true;
     }
@@ -175,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
     public void loadTasksFromDB() {
         // DB에서 모든 할 일 불러오기
         taskList = dbHelper.getTasksWithPriority();
-//        taskList = dbHelper.getTasksByDate(getFormattedDate(selectedDate));         // 선택된 날짜로부터 할 일을 불러온다.
         if (taskList == null) {
 
             taskList = new ArrayList<>();
@@ -186,4 +182,13 @@ public class MainActivity extends AppCompatActivity {
         taskAdapter = new TaskAdapter(this, taskList);
         taskRecyclerView.setAdapter(taskAdapter);
     }
+
+    private class AddTaskClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(MainActivity.this, AddTaskTitleActivity.class);
+            startActivity(intent);
+        }
+    }
+
 }
