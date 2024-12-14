@@ -17,8 +17,11 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // 하단네비게이션바 설정
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
+
         loadTasksByDate(getFormattedDate(selectedDate)); // 오늘 날짜의 할 일 불러오기
 
         // 'Add Task' 버튼 클릭 시 AddTaskTitleActivity로 이동
@@ -71,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         boolean isUpdated = result.getData().getBooleanExtra("isUpdated", false);
                         if (isUpdated) {
+                            // 모든 데이터를 불러 오는 문제가 있음 해당 날짜의 데이터만 불러오면 될 것이다.
                             loadTasksFromDB(); // DB에서 할 일 목록 불러오기
                             setTaskAdapter(); // TaskAdapter 설정, 할일 목록 출력.
 
@@ -122,6 +130,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // menu_graph는 item.getItemId()이 안된다.
+        // 왜 안되지...??
+        // id를 받아오지 못하고 있다. 왜 받아오지 못하는 것일까?
+        // view여서 그런건가?... infalte하지 않아서 못받아 오는 것 같아. 받아 올수 없는 구조인거지
+        // bottomNavigationView를 불어와야해 불러 오면, 메뉴를 어떻게 받아 올거지?
+        // 컨텍스트 메뉴를 만들어야 하나?
+        Log.i("isItem", "isItem: " + item);
+        Log.i("item", "item: " + item.getItemId());
         if (item.getItemId() == R.id.menu_calendar) {
             // 달력 아이콘 클릭 시 날짜 선택 다이얼로그 표시
             showDatePicker();
@@ -129,6 +145,24 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    private final BottomNavigationView.OnNavigationItemSelectedListener navListener = item -> {
+        // By using switch we can easily get
+        // the selected fragment
+        // by using there id.
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_graph) {
+            // GraphActivity로 전환
+            Intent graphIntent = new Intent(MainActivity.this, GraphActivity.class);
+            String formattedDate = getFormattedDate(selectedDate); // 현재 선택된 날짜
+            graphIntent.putExtra("selectedDate", formattedDate); // 선택된 날짜 전달
+            startActivity(graphIntent);
+            return true;
+        } else if (itemId == R.id.menu_graph) {
+            // MainActivity로 전환
+            // 현재 날짜의 정보로 전환
+        }
+        return true;
+    };
 
     private void showDatePicker() {
         Calendar currentDate = Calendar.getInstance();

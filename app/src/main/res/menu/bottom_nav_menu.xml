@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<!-- 할일 목록 아이콘 -->
+    <item
+        android:id="@+id/menu_tasks"
+        android:icon="@drawable/ic_tasks"
+        android:title="Tasks"
+        app:showAsAction="ifRoom" />
+    <!-- 그래프 아이콘 -->
+    <item
+        android:id="@+id/menu_graph"
+        android:icon="@drawable/ic_graph"
+        android:title="Graph"
+        app:showAsAction="ifRoom" />
+</menu>

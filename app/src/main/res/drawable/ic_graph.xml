@@ -1,0 +1,31 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- 1/4 첫 번째 (검은색) -->
+    <path
+        android:fillColor="#000"
+        android:pathData="M22,12
+            A10,10 0 0,1 12,22
+            L12,12
+            Z" />
+
+    <!-- 1/4 두 번째 (검은색) -->
+    <path
+        android:fillColor="#000"
+        android:pathData="M12,22
+            A10,10 0 0,1 2,12
+            L12,12
+            Z" />
+
+    <!-- 1/4 세 번째 (검은색) -->
+    <path
+        android:fillColor="#000"
+        android:pathData="M2,12
+            A10,10 0 0,1 12,2
+            L12,12
+            Z" />
+    <!-- 오른쪽 상단 부분을 비웁니다 -->
+</vector>
