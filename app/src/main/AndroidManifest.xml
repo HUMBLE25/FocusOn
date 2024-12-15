@@ -13,8 +13,13 @@
         android:theme="@style/Theme.FocusOn"
         tools:targetApi="31">
         <activity
-            android:name=".GraphActivity"
-            android:exported="false" />
+            android:name=".GraphFragment"
+            android:exported="false"
+            android:enableOnBackInvokedCallback="true"/>
+        <activity
+            android:name=".TaskFragment"
+            android:exported="false"
+            android:enableOnBackInvokedCallback="true"/>
         <activity
             android:name=".EditTaskActivity"
             android:exported="false" />

@@ -32,11 +32,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     private Context context;
     private ArrayList<Task> taskList;
     private DBHelper dbHelper;
-
-    public TaskAdapter(Context context, ArrayList<Task> taskList) {
+    private TaskFragment taskFragment; // TaskFragment 인스턴스
+    private String forMattedDate; // 바뀐 날짜는 저장하는 변수
+    public TaskAdapter(Context context, ArrayList<Task> taskList,  TaskFragment taskFragment,String forMattedDate) {
         this.context = context;
         this.taskList = taskList;
         this.dbHelper = new DBHelper(context); // DBHelper 초기화
+        this.taskFragment = taskFragment;
+        this.forMattedDate = forMattedDate;
     }
 
     @NonNull
@@ -54,7 +57,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         holder.taskPriorityTextView.setText("Priority: " + task.getPriority()); // 우선순위  설정
         holder.taskCheckBox.setChecked(task.isChecked());
 
-//         checked라면 취소선을 긋고 흐릿하게 만든다.
+//        checked라면 취소선을 긋고 흐릿하게 만든다.
         if(taskList.get(position).isChecked()){
             holder.itemView.setAlpha(0.5f); // 완료시 흐릿하게 만듦.
             holder.itemView.setBackground(new StrikethroughDrawable()); // 전체 itemView에 취소선을 긋는다.
@@ -75,9 +78,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 task.setWhenChecked(null);
             }
             dbHelper.updateTask(task); // DB 업데이트
-            ((MainActivity) context).loadTasksFromDB(); // 데이터 불러오기
-            ((MainActivity) context).setTaskAdapter(); // 목록 재정렬, RecyclerView 갱신
-
+            // 선택된 날짜로 할일 목록 갱신
+            taskFragment.loadTasksByDate(forMattedDate);
         });
 
         // 옵션 버튼
@@ -103,8 +105,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     dbHelper.deleteTask(task.getId()); // DB에서 삭제
                     taskList.remove(position); // 로컬 리스트에서 삭제
                     Toast.makeText(context, "할 일 삭제됨", Toast.LENGTH_SHORT).show();
-                    ((MainActivity) context).loadTasksFromDB(); // 데이터 불러오기
-                    ((MainActivity) context).setTaskAdapter(); // 목록 재정렬, RecyclerView 갱신
+                    // 선택된 날짜로 할일 목록 갱신
+                    taskFragment.loadTasksByDate(forMattedDate);
                     return true;
                 }
                 return false;

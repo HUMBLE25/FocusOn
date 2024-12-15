@@ -1,41 +1,55 @@
 package com.example.focuson;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 
-public class GraphActivity extends AppCompatActivity {
+public class GraphFragment extends Fragment {
 
     private ProgressBar progressBar; // 원형 ProgressBar
     private TextView textViewProgress; // 성취도 퍼센트 텍스트
     private TextView textViewDescription; // 성취도 설명 텍스트
     private DBHelper dbHelper; // 데이터베이스 헬퍼
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_graph);
-
-        // View 초기화
-        progressBar = findViewById(R.id.progressBar);
-        textViewProgress = findViewById(R.id.textViewProgress);
-        textViewDescription = findViewById(R.id.textViewDescription);
-
-        // DBHelper 초기화
-        dbHelper = new DBHelper(this);
-
-        // 선택된 날짜 데이터 가져오기
-        String selectedDate = getIntent().getStringExtra("selectedDate");
-
-        // 할 일 완료 비율 계산 및 UI 업데이트
-        updateProgress(selectedDate);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // fragment_graph.xml을 inflate하여 View 생성
+        return inflater.inflate(R.layout.fragment_graph, container, false);
     }
 
-    private void updateProgress(String date) {
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // View 초기화
+        progressBar = view.findViewById(R.id.progressBar);
+        textViewProgress = view.findViewById(R.id.textViewProgress);
+        textViewDescription = view.findViewById(R.id.textViewDescription);
+
+        // DBHelper 초기화
+        dbHelper = new DBHelper(requireContext());
+
+        // 선택된 날짜 데이터 가져오기
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            String selectedDate = arguments.getString("selectedDate");
+
+            // 할 일 완료 비율 계산 및 UI 업데이트
+            updateProgress(selectedDate);
+        }
+    }
+
+    public void updateProgress(String date) {
         // 해당 날짜의 모든 할 일 가져오기
         ArrayList<Task> tasks = dbHelper.getTasksByDate(date);
 
