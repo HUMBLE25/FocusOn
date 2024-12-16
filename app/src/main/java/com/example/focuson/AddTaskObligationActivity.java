@@ -30,7 +30,7 @@ public class AddTaskObligationActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 obligationValue = progress + 1; // 의무도 점수는 1~10
-                textViewObligation.setText("Obligation: " + obligationValue);
+                textViewObligation.setText("의무도: " + obligationValue);
             }
 
             @Override

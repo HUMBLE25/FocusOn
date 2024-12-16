@@ -37,7 +37,7 @@ public class AddTaskDeadlineActivity extends AppCompatActivity {
                         (view, year, month, dayOfMonth) -> {
                             dueDate = Calendar.getInstance();
                             dueDate.set(year, month, dayOfMonth);
-                            textViewUrgency.setText("Due Date: " + dayOfMonth + "/" + (month + 1) + "/" + year);
+                            textViewUrgency.setText("마감기한: " + dayOfMonth + "/" + (month + 1) + "/" + year);
                             isDateSelected = true;
                         },
                         currentDate.get(Calendar.YEAR),

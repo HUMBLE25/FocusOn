@@ -32,55 +32,61 @@ import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    public static final int REQUEST_CODE_EDIT = 101;
+    // ActivityResultLauncher: Activity에서 결과를 처리하기 위한 런처
     public ActivityResultLauncher<Intent> editTaskLauncher;
-    private Calendar selectedDate; // 날짜 선택을 위한 변수
-    private String forMattedDate; // 바뀐 날짜는 저장하는 변수
 
-    private TaskFragment taskFragment; // TaskFragment 인스턴스
-    private GraphFragment graphFragment; // GraphFragment 인스턴스
+    // 날짜와 관련된 변수들
+    private Calendar selectedDate; // 현재 선택된 날짜를 저장하기 위한 변수
+    private String forMattedDate;  // 포맷팅된 날짜 문자열
+
+    // Fragment 인스턴스
+    private TaskFragment taskFragment; // 할 일 목록을 표시하는 TaskFragment
+    private GraphFragment graphFragment; // 성취도를 표시하는 GraphFragment
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // 초기 날짜는 오늘로 설정
+        // 현재 날짜로 초기화
         selectedDate = Calendar.getInstance();
+        forMattedDate = getFormattedDate(selectedDate); // 포맷팅된 날짜 문자열로 저장
 
-        forMattedDate = getFormattedDate(selectedDate);
-        // 툴바 설정
+        // Toolbar 설정
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // 프래그먼트 초기화
+        // Fragment 초기화
         taskFragment = new TaskFragment();
         graphFragment = new GraphFragment();
 
-        // TaskFragment를 초기 화면으로 설정
-        Bundle bundle = new Bundle();
-        bundle.putString("selectedDate", forMattedDate);
-        taskFragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContainerView, taskFragment)
-                .commit();
+        // 초기 화면으로 TaskFragment 설정
+        setFragment(taskFragment);
 
-        // 하단네비게이션바 설정
+        // 하단 네비게이션 초기화 및 클릭 리스너 설정
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
 
-        handleNewTaskIntent(); // Intent로 새 할 일 데이터 처리
+        // 수정 결과 처리를 위한 런처 초기화
+        initializeEditTaskLauncher();
 
-        // TaskFragment에서 필요한 매서드
-        // "수정" 후 결과 처리
+        // 새로 추가된 Task 데이터를 처리
+        handleNewTaskIntent();
+    }
+
+    /**
+     * initializeEditTaskLauncher
+     * - "수정" 후 결과 처리를 위한 런처 초기화 메서드.
+     * - TaskFragment가 수정된 Task 데이터를 갱신하도록 한다.
+     */
+    private void initializeEditTaskLauncher() {
         editTaskLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         boolean isUpdated = result.getData().getBooleanExtra("isUpdated", false);
                         if (isUpdated) {
-                            // 모든 데이터를 불러 오는 문제가 있음 해당 날짜의 데이터만 불러오면 될 것이다.
-                            taskFragment.loadTasksByDate(forMattedDate);// DB에서 할 일 목록 불러오기
+                            taskFragment.loadTasksByDate(forMattedDate); // 날짜에 따른 할 일 갱신
                         }
                     }
                 }
@@ -89,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // Toolbar 메뉴를 초기화하고 날짜를 업데이트한다.
         getMenuInflater().inflate(R.menu.main_menu, menu);
         updateToolbarDate(menu);
         return true;
@@ -97,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Toolbar 메뉴 아이템 클릭 이벤트 처리
         if (item.getItemId() == R.id.menu_calendar) {
             // 달력 아이콘 클릭 시 날짜 선택 다이얼로그 표시
             showDatePicker();
@@ -114,6 +122,12 @@ public class MainActivity extends AppCompatActivity {
         return true;
     };
 
+    /**
+     * updateToolbarDate
+     * - Toolbar의 날짜를 업데이트하는 메서드.
+     * - 현재 선택된 날짜를 툴바에 표시한다.
+     * @param menu Toolbar의 메뉴 객체
+     */
     private void updateToolbarDate(Menu menu) {
         MenuItem todayDateItem = menu.findItem(R.id.menu_today_date);
         if (todayDateItem != null) {
@@ -124,6 +138,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    /**
+     * showDatePicker
+     * - 날짜 선택 다이얼로그를 표시하는 메서드.
+     * - 선택된 날짜를 저장하고 프래그먼트 데이터를 갱신한다.
+     */
     private void showDatePicker() {
         Calendar currentDate = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(
@@ -134,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
 
                     // 상단 메뉴 날짜 갱신
                     invalidateOptionsMenu();
-
                     forMattedDate = getFormattedDate(selectedDate);
                     updateFragmentData();
                     Toast.makeText(this, "선택된 날짜: " + new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(selectedDate.getTime()), Toast.LENGTH_SHORT).show();
@@ -145,12 +163,24 @@ public class MainActivity extends AppCompatActivity {
         );
         datePickerDialog.show();
     }
-
+    /**
+     * setFragment
+     * - 특정 프래그먼트로 화면을 전환하는 메서드.
+     * @param fragment 전환할 프래그먼트
+     */
     private void setFragment(Fragment fragment) {
+        Bundle bundle = new Bundle();
+        bundle.putString("selectedDate", forMattedDate); // 현재 날짜 전달
+        fragment.setArguments(bundle); // 선택된 Fragment에 인자 전달
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragmentContainerView, fragment)
                 .commit();
     }
+    /**
+     * updateFragmentData
+     * - 현재 표시 중인 프래그먼트의 데이터를 갱신하는 메서드.
+     * - TaskFragment 또는 GraphFragment의 데이터를 갱신한다.
+     */
     private void updateFragmentData() {
         if (taskFragment.isVisible()) {
             taskFragment.loadTasksByDate(forMattedDate);
@@ -159,10 +189,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * handleNewTaskIntent
+     * - Intent로 전달받은 새 Task 데이터를 처리하는 메서드.
+     * - Task 데이터를 DB에 저장하고 TaskFragment를 갱신한다.
+     */
     private void handleNewTaskIntent() {
-        // 앱이 종료되지는 앟는다.
-        // 하지만 화면이 갱신되지 않는다.
-        // DB에 들어가지만 날짜가 들어가지 않는 문제가 생기고 있다.
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("newTaskTitle")) {
             String taskTitle = intent.getStringExtra("newTaskTitle");
@@ -186,7 +218,11 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "할 일이 추가되었습니다.", Toast.LENGTH_SHORT).show();
         }
     }
-    // 날짜 포맷 메서드
+    /**
+     * getFormattedDate
+     * - 날짜를 포맷팅하여 문자열로 반환하는 메서드.
+     * @param calendar 포맷팅할 날짜를 가진 Calendar 객체
+     */
     private String getFormattedDate(Calendar calendar) {
         return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.getTime());
     }

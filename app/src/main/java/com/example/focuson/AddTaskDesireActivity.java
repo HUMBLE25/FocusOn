@@ -29,7 +29,7 @@ public class AddTaskDesireActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 desireValue = progress + 1; // 바람 점수는 1~10 사이
-                textViewDesire.setText("Desire: " + desireValue);
+                textViewDesire.setText("희망도: " + desireValue);
             }
 
             @Override

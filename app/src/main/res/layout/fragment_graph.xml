@@ -8,22 +8,24 @@
     tools:context=".TaskFragment">
 
     <!-- 원형 ProgressBar -->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_margin="16dp"
-        android:indeterminate="false"
-        android:max="100"
-        android:progress="0"
-        android:progressTint="@color/purple_500"
-        style="?android:attr/progressBarStyle"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- 성취도 퍼센트 텍스트 -->
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressBar"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        app:indicatorColor="#3A86FF"
+        app:indicatorSize="150dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499"
+        app:trackColor="#FEF7FF"
+        app:trackThickness="10dp" />
+
     <TextView
         android:id="@+id/textViewProgress"
         android:layout_width="wrap_content"
@@ -31,10 +33,10 @@
         android:text="0%"
         android:textColor="@color/black"
         android:textSize="24sp"
-        app:layout_constraintTop_toTopOf="@+id/progressBar"
         app:layout_constraintBottom_toBottomOf="@+id/progressBar"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar"
         app:layout_constraintStart_toStartOf="@+id/progressBar"
-        app:layout_constraintEnd_toEndOf="@+id/progressBar" />
+        app:layout_constraintTop_toTopOf="@+id/progressBar" />
 
     <!-- 성취도 내용 설명 -->
     <TextView
@@ -45,8 +47,8 @@
         android:text="Complete your tasks to increase the percentage!"
         android:textColor="@color/black"
         android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

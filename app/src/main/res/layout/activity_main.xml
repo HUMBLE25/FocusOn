@@ -15,31 +15,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-    <!-- 프래그먼트로 교체할 예정 -->
-    <!--     할 일 목록을 표시하는 RecyclerView, 스크롤바 추가-->
-    <!--    <androidx.recyclerview.widget.RecyclerView-->
-    <!--        android:id="@+id/taskRecyclerView"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        android:scrollbars="vertical"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/toolbar"-->
-    <!--        app:layout_constraintBottom_toTopOf="@+id/addTaskButton"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        tools:listitem="@layout/item_task" />-->
-
-    <!-- 새 할 일 추가 버튼 -->
-    <!--    <Button-->
-    <!--        android:id="@+id/addTaskButton"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginBottom="8dp"-->
-    <!--        android:text="+"-->
-    <!--        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent" />-->
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="FocusOn"
+        app:titleTextAppearance="@style/TextAppearance.AppCompat.Large"
+        app:titleTextColor="@color/white" />
 
     <!--  프래그먼튼 뷰  -->
     <androidx.fragment.app.FragmentContainerView
@@ -57,6 +36,9 @@
         android:id="@+id/bottomNavigationView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="#3A86FF"
+        app:itemIconTint="@android:color/white"
+        app:itemTextColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

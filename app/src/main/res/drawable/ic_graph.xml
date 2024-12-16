@@ -6,7 +6,7 @@
 
     <!-- 1/4 첫 번째 (검은색) -->
     <path
-        android:fillColor="#000"
+        android:fillColor="#fff"
         android:pathData="M22,12
             A10,10 0 0,1 12,22
             L12,12
@@ -14,7 +14,7 @@
 
     <!-- 1/4 두 번째 (검은색) -->
     <path
-        android:fillColor="#000"
+        android:fillColor="#fff"
         android:pathData="M12,22
             A10,10 0 0,1 2,12
             L12,12
@@ -22,7 +22,7 @@
 
     <!-- 1/4 세 번째 (검은색) -->
     <path
-        android:fillColor="#000"
+        android:fillColor="#fff"
         android:pathData="M2,12
             A10,10 0 0,1 12,2
             L12,12

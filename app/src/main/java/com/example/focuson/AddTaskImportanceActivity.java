@@ -27,7 +27,7 @@ public class AddTaskImportanceActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 importanceValue = progress + 1; // 중요도는 1~10
-                textViewImportance.setText("Importance: " + importanceValue);
+                textViewImportance.setText("중요도: " + importanceValue);
             }
 
             @Override

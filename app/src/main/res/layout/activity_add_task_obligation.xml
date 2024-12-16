@@ -11,10 +11,10 @@
         android:id="@+id/textViewObligation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Obligation: 1"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="16dp"
+        android:text="의무도: 1"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="16dp"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- 의무도 설정을 위한 SeekBar -->
     <SeekBar
@@ -32,9 +32,9 @@
         android:id="@+id/buttonComplete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Complete"
-        app:layout_constraintTop_toBottomOf="@id/seekBarObligation"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"
+        android:text="완료"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/seekBarObligation" />
 </androidx.constraintlayout.widget.ConstraintLayout>

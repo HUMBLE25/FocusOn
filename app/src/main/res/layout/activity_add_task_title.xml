@@ -11,20 +11,21 @@
         android:id="@+id/editTextTaskTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Enter Task Title"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="16dp"
+        android:hint="할일 제목을 입력하시오."
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- 다음 화면으로 이동하는 버튼 -->
     <Button
         android:id="@+id/buttonNextToImportance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Next"
-        app:layout_constraintTop_toBottomOf="@id/editTextTaskTitle"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"
+        android:text="다음"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextTaskTitle" />
 </androidx.constraintlayout.widget.ConstraintLayout>
